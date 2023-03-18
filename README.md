@@ -1,10 +1,9 @@
-[![Dart CI](https://github.com/dart-lang/args/actions/workflows/test-package.yml/badge.svg)](https://github.com/dart-lang/args/actions/workflows/test-package.yml)
+#[![Dart CI](https://github.com/dart-lang/args/actions/workflows/test-package.yml/badge.svg)](https://github.com/dart-lang/args/actions/workflows/test-package.yml)
 [![pub package](https://img.shields.io/pub/v/args.svg)](https://pub.dev/packages/args)
-[![package publisher](https://img.shields.io/pub/publisher/args.svg)](https://pub.dev/packages/args/publisher)
 
-This library is a notifier for Events,Data and States.in 3 separate classes.
+This library is a notifier for Events,Data and States. in 3 separate classes.
 
-This library works in both server-side and client-side apps.
+This library works in both server-side and client-side apps. (Dart & Flutter)
 
 ## Usages
 
@@ -14,13 +13,15 @@ This service notify data to listeners.
 
 First create a key:
 
-    class PublicAccess {
-        PublicAccess._();
+```dart
+class PublicAccess {
+    PublicAccess._();
 
-        static final newDataNotifier =  DataNotifierService.generateKey();
-        // or
-        static final newDataNotifier2 =  DataNotifierKey.by('myKey');
-    }
+    static final newDataNotifier =  DataNotifierService.generateKey();
+    // or
+    static final newDataNotifier2 =  DataNotifierKey.by('myKey');
+}
+```
 
 Then start using:
 
@@ -80,7 +81,7 @@ class ExampleForDataNotifier {
 ```
 #
 #
-### ExampleForEventNotifier
+### EventNotifierService
 
 This service notify to listeners when an event occurs.
 
@@ -100,7 +101,7 @@ enum EventList implements EventImplement {
 
   final int _number;
 
-  const EventDispatcher(this._number);
+  const EventList(this._number);
 
   int getNumber(){
     return _number;
@@ -114,13 +115,13 @@ Then start using:
 class ExampleForEventNotifier {
 
   /// first, must add function(s) as listener
-  static void dataNotifier$addListener(){
+  static void eventNotifier$addListener(){
     EventNotifierService.addListener(EventList.networkConnected, eventNotifierListener1);
     EventNotifierService.addListener(EventList.networkDisConnected, eventNotifierListener2);
   }
 
   /// any time you feel not need to listening, can remove that
-  static void dataNotifier$removeListener(){
+  static void eventNotifier$removeListener(){
     EventNotifierService.removeListener(EventList.networkConnected, eventNotifierListener1);
     EventNotifierService.removeListener(EventList.networkDisConnected, eventNotifierListener2);
   }
@@ -163,7 +164,7 @@ class ExampleForEventNotifier {
 #
 ### StateNotifier
 
-This service notify to listeners when an event occurs.
+This tool notifies to listeners and holds states.
 
 First create a `class` that extends `StateHolder`:
 
@@ -184,6 +185,16 @@ class StateStructure extends StateHolder<StateList> {
 }
 ```
 
+Then create a StateNotifier:
+
+```dart
+class PublicAccess {
+  PublicAccess._();
+  
+  static final StateStructure stateStructure = StateStructure();
+  static final StateNotifier<StateStructure> stateNotifier = StateNotifier(stateStructure);
+```
+
 Then start using:
 
 ```dart
@@ -191,25 +202,32 @@ class ExampleForStateNotifier {
 
   /// first, must add function(s) as listener
   static void stateNotifier$addListener(){
-    PublicAccess.messageNotifier.addListener(listener);
+    PublicAccess.stateNotifier.addListener(listener);
   }
 
   /// any time you feel not need to listening, can remove that
   static void stateNotifier$removeListener(){
-    PublicAccess.messageNotifier.removeListener(listener);
+    PublicAccess.stateNotifier.removeListener(listener);
   }
 
   /// Here you can publish data
   static void startNotifier(){
     Timer.periodic(Duration(seconds: 5), (timer) {
-      PublicAccess.messageNotifier.notify();
-      PublicAccess.messageNotifier.notify(states: {StateList.ok}, data: 'any data');
+      PublicAccess.stateNotifier.notify();
+
+      /// share a data
+      PublicAccess.stateNotifier.addValue('myKey', timer.tick);
+      
+      /// notify with state(s) and data
+      PublicAccess.stateNotifier.notify(states: {StateList.ok}, data: 'any data');
     });
   }
 
   static void listener(StateNotifier notifier, {dynamic data}){
     if(notifier.states.hasState(StateList.ok)){
-      //
+      final tick = notifier.getValue('myKey');
+
+      (notifier as StateStructure).isInRequest = true;
     }
   }
 }

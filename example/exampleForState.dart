@@ -34,13 +34,17 @@ class ExampleForStateNotifier {
   static void startNotifier(){
     Timer.periodic(Duration(seconds: 5), (timer) {
       PublicAccess.messageNotifier.notify();
+
+      PublicAccess.messageNotifier.addValue('myKey', timer.tick);
       PublicAccess.messageNotifier.notify(states: {StateList.ok}, data: 'any data');
     });
   }
 
   static void listener(StateNotifier notifier, {dynamic data}){
     if(notifier.states.hasState(StateList.ok)){
-      //
+      final tick = notifier.getValue('myKey');
+
+      (notifier as StateStructure).isInRequest = true;
     }
   }
 }
