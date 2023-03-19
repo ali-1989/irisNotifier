@@ -1,13 +1,13 @@
-#[![Dart CI](https://github.com/dart-lang/args/actions/workflows/test-package.yml/badge.svg)](https://github.com/dart-lang/args/actions/workflows/test-package.yml)
+[//]: # ([![Dart CI]&#40;https://github.com/dart-lang/args/actions/workflows/test-package.yml/badge.svg&#41;]&#40;https://github.com/dart-lang/args/actions/workflows/test-package.yml&#41;)
 [![pub package](https://img.shields.io/pub/v/args.svg)](https://pub.dev/packages/args)
 
 ## Iris
-#
+# 
 This library is a notifier for Events,Data and States. in 3 separate classes.
 
 This library works in both server-side and client-side apps. (Dart & Flutter)
 
-#
+# 
 
 ### DataNotifierService
 
@@ -81,8 +81,8 @@ class ExampleForDataNotifier {
   }
 }
 ```
-#
-#
+# 
+# 
 ### EventNotifierService
 
 This service notify to listeners when an event occurs.
