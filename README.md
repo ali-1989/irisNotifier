@@ -7,7 +7,6 @@ This library is a notifier for Events,Data and States. in 3 separate classes.
 
 This library works in both server-side and client-side apps. (Dart & Flutter)
 
-# 
 
 ### DataNotifierService
 
@@ -162,8 +161,8 @@ class ExampleForEventNotifier {
   }
 }
 ```
-#
-#
+# 
+# 
 ### StateNotifier
 
 This tool notifies to listeners and holds states.
