@@ -1,11 +1,11 @@
 name: iris_notifier
-version: 0.0.3
+version: 0.0.4
 description: A package for notifier. This package includes several notifiers. Notify for data, Notify for event and Notify for state.
 
 repository: https://github.com/ali-1989/irisNotifier
 
 environment:
-  sdk: '>=2.19.0 <3.0.0'
+  sdk: '>=3.0.0 <4.0.0'
 
 dev_dependencies:
   lints: ^2.0.1
