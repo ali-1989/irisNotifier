@@ -2,11 +2,12 @@
 ## 0.0.4
 
 -  (2023-05-17)
-* changing minimum dart sdk to 3.0.0 (flutter 3.10.0)
+* changing minimum dart SDK to 3.0.0 (flutter 3.10.0)
 
+## 0.0.3
 
 -  (2023-04-17)
-* changing minimum sdk to 2.19
+* changing minimum SDK to 2.19
 * upgrading dev_dependencies
 
 ## 0.0.2
