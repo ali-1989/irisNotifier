@@ -1,8 +1,10 @@
 import 'dart:async';
 
 typedef EventFunction = void Function({dynamic data});
+typedef MultiEventFunction = void Function(EventImplement event, {dynamic data});
 ///==============================================================================
 class EventNotifierService {
+  static final List<MultiEventFunction> _listeners = [];
   static final Map<EventImplement, List<EventFunction>> _listenersMap = {};
   static final Map<EventImplement, StreamController> _streams = {};
 
@@ -20,6 +22,12 @@ class EventNotifierService {
     _listenersMap[event]?.add(func);
   }
 
+  static void addMultiListener(MultiEventFunction func){
+    if(!_listeners.contains(func)){
+      _listeners.add(func);
+    }
+  }
+
   static void removeListener(EventImplement event, EventFunction func){
     if(!_listenersMap.containsKey(event)){
       return;
@@ -28,6 +36,10 @@ class EventNotifierService {
     if(_listenersMap[event]!.remove(func)){
       return;
     }
+  }
+
+  static void removeMultiListener(MultiEventFunction func){
+    _listeners.remove(func);
   }
 
   static bool hasListener(EventImplement event){
@@ -71,6 +83,13 @@ class EventNotifierService {
         catch(e){/**/}
         break;
       }
+    }
+
+    for(final lis in _listeners){
+      try{
+        lis.call(event, data: data);
+      }
+      catch(e){/**/}
     }
   }
 
