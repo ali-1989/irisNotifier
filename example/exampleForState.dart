@@ -1,7 +1,14 @@
 import 'dart:async';
 
-import '../lib/src/state_notifier.dart';
+import 'package:iris_notifier/src/event_state_notifier.dart';
+
 import 'publicAccess.dart';
+
+enum EventList implements EventNotifyImplement {
+  start,
+  run,
+  stop;
+}
 
 enum StateList {
   error,
@@ -9,7 +16,7 @@ enum StateList {
   ok;
 }
 
-class StateStructure extends StateHolder<StateList> {
+class StateStructure extends StatesManager<StateList> {
   bool isRequested = false;
   bool isInRequest = false;
 
@@ -17,7 +24,7 @@ class StateStructure extends StateHolder<StateList> {
     return isRequested && !isInRequest && !hasStates({StateList.error, StateList.wait});
   }
 }
-
+///=============================================================================
 class ExampleForStateNotifier {
 
   /// first, must add function(s) as listener
@@ -36,12 +43,12 @@ class ExampleForStateNotifier {
       PublicAccess.messageNotifier.notify();
 
       PublicAccess.messageNotifier.addValue('myKey', timer.tick);
-      PublicAccess.messageNotifier.notify(states: {StateList.ok}, data: 'any data');
+      PublicAccess.messageNotifier.notify(event: EventList.start);
     });
   }
 
-  static void listener(StateNotifier notifier, {dynamic data}){
-    if(notifier.states.hasState(StateList.ok)){
+  static void listener(EventStateNotifier notifier, EventNotifyImplement? event){
+    if(notifier.stateManager.hasState(StateList.ok)){
       final tick = notifier.getValue('myKey');
 
       (notifier as StateStructure).isInRequest = true;

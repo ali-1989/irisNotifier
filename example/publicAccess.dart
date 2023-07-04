@@ -1,6 +1,7 @@
 
+import 'package:iris_notifier/src/event_state_notifier.dart';
+
 import '../lib/src/data_notifier_service.dart';
-import '../lib/src/state_notifier.dart';
 import 'exampleForState.dart';
 
 class PublicAccess {
@@ -10,5 +11,5 @@ class PublicAccess {
  static final newDataNotifier2 =  DataNotifierKey.by('myKey');
 
   static final StateStructure stateStructure = StateStructure();
-  static final StateNotifier<StateStructure> messageNotifier = StateNotifier(stateStructure);
+  static final EventStateNotifier<StateStructure> messageNotifier = EventStateNotifier(stateStructure);
 }

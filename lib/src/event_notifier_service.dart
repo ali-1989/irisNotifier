@@ -62,7 +62,7 @@ class EventNotifierService {
     return _streams[key]!.stream as Stream<T>;
   }
 
-  static notify(EventImplement event, {dynamic data}){
+  static void notify(EventImplement event, {dynamic data}){
     for (final ef in _listenersMap.entries) {
       if (ef.key == event) {
         for (final f in ef.value) {
@@ -93,7 +93,7 @@ class EventNotifierService {
     }
   }
 
-  static notifyFor(List<EventImplement> events, {dynamic data}){
+  static void notifyFor(List<EventImplement> events, {dynamic data}){
     for(final e in events){
       notify(e, data: data);
     }
