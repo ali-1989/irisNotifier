@@ -1,6 +1,6 @@
 import 'dart:async';
 
-typedef EventListener<S> = void Function(EventStateNotifier notifier, EventNotifyImplement? event);
+typedef EventListener<S, E extends EventNotifyImplement> = void Function(EventStateNotifier notifier, E? event);
 ///==============================================================================
 class EventStateNotifier<S extends StatesManager> {
   late final S _states;
