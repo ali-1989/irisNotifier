@@ -1,4 +1,11 @@
 
+## 0.0.6
+
+-  (2023-06-03)
+
+* BREAKING CHANGE
+  * StateNotifier renamed to EventStateNotifier and it change fundamental
+
 ## 0.0.4
 
 -  (2023-05-17)
