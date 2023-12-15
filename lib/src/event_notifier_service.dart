@@ -1,10 +1,10 @@
 import 'dart:async';
 
-typedef EventFunction = void Function({dynamic data});
-typedef MultiEventFunction = void Function(EventImplement event, {dynamic data});
-///==============================================================================
+typedef EventFunction = FutureOr<void> Function({dynamic data});
+typedef MultiEventFunction = FutureOr<void> Function(EventImplement event, {dynamic data});
+///=============================================================================
 class EventNotifierService {
-  static final List<MultiEventFunction> _listeners = [];
+  static final List<MultiEventFunction> _multiListeners = [];
   static final Map<EventImplement, List<EventFunction>> _listenersMap = {};
   static final Map<EventImplement, StreamController> _streams = {};
 
@@ -23,8 +23,8 @@ class EventNotifierService {
   }
 
   static void addMultiListener(MultiEventFunction func){
-    if(!_listeners.contains(func)){
-      _listeners.add(func);
+    if(!_multiListeners.contains(func)){
+      _multiListeners.add(func);
     }
   }
 
@@ -39,7 +39,7 @@ class EventNotifierService {
   }
 
   static void removeMultiListener(MultiEventFunction func){
-    _listeners.remove(func);
+    _multiListeners.remove(func);
   }
 
   static bool hasListener(EventImplement event){
@@ -62,12 +62,12 @@ class EventNotifierService {
     return _streams[key]!.stream as Stream<T>;
   }
 
-  static void notify(EventImplement event, {dynamic data}){
+  static Future<void> notify(EventImplement event, {dynamic data}) async {
     for (final ef in _listenersMap.entries) {
       if (ef.key == event) {
         for (final f in ef.value) {
           try {
-            f.call(data: data);
+            await f.call(data: data);
           }
           catch (e) {/**/}
         }
@@ -85,21 +85,21 @@ class EventNotifierService {
       }
     }
 
-    for(final lis in _listeners){
+    for(final lis in _multiListeners){
       try{
-        lis.call(event, data: data);
+        await lis.call(event, data: data);
       }
       catch(e){/**/}
     }
   }
 
-  static void notifyFor(List<EventImplement> events, {dynamic data}){
+  static Future<void> notifyFor(List<EventImplement> events, {dynamic data}) async {
     for(final e in events){
-      notify(e, data: data);
+      await notify(e, data: data);
     }
   }
 }
-///==============================================================================
+///=============================================================================
 class EventImplement {
 }
 

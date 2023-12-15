@@ -1,7 +1,7 @@
 import 'dart:async';
 
-typedef EventListener<S, E extends EventNotifyImplement> = void Function(EventStateNotifier notifier, E? event);
-///==============================================================================
+typedef EventListener<S, E extends EventNotifyImplement> = FutureOr<void> Function(EventStateNotifier notifier, E? event);
+///=============================================================================
 class EventStateNotifier<S extends StatesManager> {
   late final S _states;
   final Map<String, dynamic> stores = {};
@@ -36,10 +36,10 @@ class EventStateNotifier<S extends StatesManager> {
     return _streams[key]!.stream as Stream<T>;
   }
 
-  void notify({EventNotifyImplement? event}){
+  Future<void> notify({EventNotifyImplement? event}) async {
     for(final lis in _listeners){
       try{
-        lis.call(this, event);
+        await lis.call(this, event);
       }
       catch(e){/**/}
     }
@@ -55,12 +55,12 @@ class EventStateNotifier<S extends StatesManager> {
     }
   }
 
-  void notifyFor(List<EventNotifyImplement> events){
+  Future<void> notifyFor(List<EventNotifyImplement> events) async {
     for(final e in events){
-      notify(event: e);
+      await notify(event: e);
     }
   }
-  ///------------------------------------------------
+  ///---------------------------------------------------------------------------
   void addValue(String key, dynamic value){
     stores[key] = value;
   }
@@ -85,10 +85,10 @@ class EventStateNotifier<S extends StatesManager> {
     stores.clear();
   }
 }
-///==============================================================================
+///=============================================================================
 class EventNotifyImplement {
 }
-///==============================================================================
+///=============================================================================
 class StatesManager<S> {
   final Set<S> _states = {};
 

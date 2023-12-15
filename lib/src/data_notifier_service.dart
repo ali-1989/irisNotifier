@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:math';
 
 
-typedef DataListener<T> = void Function(T data);
-///==============================================================================
+typedef DataListener<T> = FutureOr<void> Function(T data);
+///=============================================================================
 class DataNotifierService {
   static final Map<DataNotifierKey, List<DataListener>> _listenersMap = {};
   static final Map<DataNotifierKey, StreamController> _streams = {};
@@ -64,12 +64,12 @@ class DataNotifierService {
     return _streams[key]!.stream as Stream<T>;
   }
 
-  static notify(DataNotifierKey key, dynamic data){
+  static Future<void> notify(DataNotifierKey key, dynamic data) async {
     for (final ef in _listenersMap.entries) {
       if (ef.key == key) {
         for (final f in ef.value) {
           try {
-            f.call(data);
+            await f.call(data);
           }
           catch (e) {/**/}
         }
@@ -88,13 +88,13 @@ class DataNotifierService {
     }
   }
 
-  static notifyFor(List<DataNotifierKey> keys, dynamic data){
+  static Future<void> notifyFor(List<DataNotifierKey> keys, dynamic data) async {
     for(final k in keys){
       notify(k, data);
     }
   }
 }
-///==============================================================================
+///=============================================================================
 class DataNotifierKey {
   final String key;
 

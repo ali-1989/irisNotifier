@@ -1,6 +1,12 @@
 
+## 0.0.8
+-  (2023-12-15)
+
+* Addition of FutureOr to Listeners and Future output for the notify methods.
+
 ## 0.0.7
 -  (2023-06-03)
+
 * fix a bug
 
 ## 0.0.6
